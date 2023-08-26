@@ -1,0 +1,2158 @@
+# serializer version: 1
+# name: test_snapshot
+  dict({
+    'Outputs': dict({
+      'appapiEndpoint117BA1A5': dict({
+        'Value': dict({
+          'Fn::Join': list([
+            '',
+            list([
+              'https://',
+              dict({
+                'Ref': 'appapi049EFCB7',
+              }),
+              '.execute-api.',
+              dict({
+                'Ref': 'AWS::Region',
+              }),
+              '.',
+              dict({
+                'Ref': 'AWS::URLSuffix',
+              }),
+              '/',
+              dict({
+                'Ref': 'appapiDeploymentStageprod86597867',
+              }),
+              '/',
+            ]),
+          ]),
+        }),
+      }),
+      'staticstaticweburl238FAF51': dict({
+        'Value': dict({
+          'Fn::Join': list([
+            '',
+            list([
+              'https://',
+              dict({
+                'Fn::GetAtt': list([
+                  'staticcloudfrontdistribution26AA6F05',
+                  'DomainName',
+                ]),
+              }),
+            ]),
+          ]),
+        }),
+      }),
+    }),
+    'Parameters': dict({
+      'BootstrapVersion': dict({
+        'Default': '/cdk-bootstrap/hnb659fds/version',
+        'Description': 'Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]',
+        'Type': 'AWS::SSM::Parameter::Value<String>',
+      }),
+    }),
+    'Resources': dict({
+      'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536': dict({
+        'DependsOn': list([
+          'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF',
+          'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265',
+        ]),
+        'Properties': dict({
+          'Code': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+            'S3Key': str,
+          }),
+          'Environment': dict({
+            'Variables': dict({
+              'AWS_CA_BUNDLE': '/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem',
+            }),
+          }),
+          'Handler': 'index.handler',
+          'Layers': list([
+            dict({
+              'Ref': 'staticdeployAwsCliLayerC71EE423',
+            }),
+          ]),
+          'Role': dict({
+            'Fn::GetAtt': list([
+              'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265',
+              'Arn',
+            ]),
+          }),
+          'Runtime': 'python3.9',
+          'Timeout': 900,
+        }),
+        'Type': 'AWS::Lambda::Function',
+      }),
+      'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265': dict({
+        'Properties': dict({
+          'AssumeRolePolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': 'sts:AssumeRole',
+                'Effect': 'Allow',
+                'Principal': dict({
+                  'Service': 'lambda.amazonaws.com',
+                }),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'ManagedPolicyArns': list([
+            dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:',
+                  dict({
+                    'Ref': 'AWS::Partition',
+                  }),
+                  ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
+                ]),
+              ]),
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Role',
+      }),
+      'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF': dict({
+        'Properties': dict({
+          'PolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': list([
+                  's3:GetObject*',
+                  's3:GetBucket*',
+                  's3:List*',
+                ]),
+                'Effect': 'Allow',
+                'Resource': list([
+                  dict({
+                    'Fn::Join': list([
+                      '',
+                      list([
+                        'arn:',
+                        dict({
+                          'Ref': 'AWS::Partition',
+                        }),
+                        ':s3:::',
+                        dict({
+                          'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+                        }),
+                      ]),
+                    ]),
+                  }),
+                  dict({
+                    'Fn::Join': list([
+                      '',
+                      list([
+                        'arn:',
+                        dict({
+                          'Ref': 'AWS::Partition',
+                        }),
+                        ':s3:::',
+                        dict({
+                          'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+                        }),
+                        '/*',
+                      ]),
+                    ]),
+                  }),
+                ]),
+              }),
+              dict({
+                'Action': list([
+                  's3:GetObject*',
+                  's3:GetBucket*',
+                  's3:List*',
+                  's3:DeleteObject*',
+                  's3:PutObject',
+                  's3:PutObjectLegalHold',
+                  's3:PutObjectRetention',
+                  's3:PutObjectTagging',
+                  's3:PutObjectVersionTagging',
+                  's3:Abort*',
+                ]),
+                'Effect': 'Allow',
+                'Resource': list([
+                  dict({
+                    'Fn::GetAtt': list([
+                      'staticbucket1958D107',
+                      'Arn',
+                    ]),
+                  }),
+                  dict({
+                    'Fn::Join': list([
+                      '',
+                      list([
+                        dict({
+                          'Fn::GetAtt': list([
+                            'staticbucket1958D107',
+                            'Arn',
+                          ]),
+                        }),
+                        '/*',
+                      ]),
+                    ]),
+                  }),
+                ]),
+              }),
+              dict({
+                'Action': list([
+                  'cloudfront:GetInvalidation',
+                  'cloudfront:CreateInvalidation',
+                ]),
+                'Effect': 'Allow',
+                'Resource': '*',
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'PolicyName': 'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF',
+          'Roles': list([
+            dict({
+              'Ref': 'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Policy',
+      }),
+      'appapi049EFCB7': dict({
+        'Properties': dict({
+          'Description': 'destiny_dice',
+          'Name': 'dice-api-destiny_dice',
+        }),
+        'Type': 'AWS::ApiGateway::RestApi',
+      }),
+      'appapiAccount74CCBC71': dict({
+        'DeletionPolicy': 'Retain',
+        'DependsOn': list([
+          'appapi049EFCB7',
+        ]),
+        'Properties': dict({
+          'CloudWatchRoleArn': dict({
+            'Fn::GetAtt': list([
+              'appapiCloudWatchRole37B8F15A',
+              'Arn',
+            ]),
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Account',
+        'UpdateReplacePolicy': 'Retain',
+      }),
+      'appapiCloudWatchRole37B8F15A': dict({
+        'DeletionPolicy': 'Retain',
+        'Properties': dict({
+          'AssumeRolePolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': 'sts:AssumeRole',
+                'Effect': 'Allow',
+                'Principal': dict({
+                  'Service': 'apigateway.amazonaws.com',
+                }),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'ManagedPolicyArns': list([
+            dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:',
+                  dict({
+                    'Ref': 'AWS::Partition',
+                  }),
+                  ':iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs',
+                ]),
+              ]),
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Role',
+        'UpdateReplacePolicy': 'Retain',
+      }),
+      'appapiDeployment11C3153226b2d020126ae2c5979370ee4c701075': dict({
+        'DependsOn': list([
+          'appapiOPTIONS969A4903',
+          'appapipoolspoolnameDELETE7A5261B5',
+          'appapipoolspoolnamediceGET47C40AE8',
+          'appapipoolspoolnamediceOPTIONS9D5B5903',
+          'appapipoolspoolnamedice42B646CD',
+          'appapipoolspoolnameOPTIONS5BC9EE31',
+          'appapipoolspoolnamePOST90880D81',
+          'appapipoolspoolnameA374D274',
+          'appapipoolsGET7982554F',
+          'appapipoolsOPTIONSBB1429DE',
+          'appapipools3B3E3850',
+        ]),
+        'Properties': dict({
+          'Description': 'destiny_dice',
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Deployment',
+      }),
+      'appapiDeploymentStageprod86597867': dict({
+        'DependsOn': list([
+          'appapiAccount74CCBC71',
+        ]),
+        'Properties': dict({
+          'DeploymentId': dict({
+            'Ref': 'appapiDeployment11C3153226b2d020126ae2c5979370ee4c701075',
+          }),
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+          'StageName': 'prod',
+        }),
+        'Type': 'AWS::ApiGateway::Stage',
+      }),
+      'appapiOPTIONS969A4903': dict({
+        'Properties': dict({
+          'ApiKeyRequired': False,
+          'AuthorizationType': 'NONE',
+          'HttpMethod': 'OPTIONS',
+          'Integration': dict({
+            'IntegrationResponses': list([
+              dict({
+                'ResponseParameters': dict({
+                  'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                  'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                  'method.response.header.Access-Control-Allow-Origin': "'*'",
+                }),
+                'StatusCode': '204',
+              }),
+            ]),
+            'RequestTemplates': dict({
+              'application/json': '{ statusCode: 200 }',
+            }),
+            'Type': 'MOCK',
+          }),
+          'MethodResponses': list([
+            dict({
+              'ResponseParameters': dict({
+                'method.response.header.Access-Control-Allow-Headers': True,
+                'method.response.header.Access-Control-Allow-Methods': True,
+                'method.response.header.Access-Control-Allow-Origin': True,
+              }),
+              'StatusCode': '204',
+            }),
+          ]),
+          'ResourceId': dict({
+            'Fn::GetAtt': list([
+              'appapi049EFCB7',
+              'RootResourceId',
+            ]),
+          }),
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Method',
+      }),
+      'appapipools3B3E3850': dict({
+        'Properties': dict({
+          'ParentId': dict({
+            'Fn::GetAtt': list([
+              'appapi049EFCB7',
+              'RootResourceId',
+            ]),
+          }),
+          'PathPart': 'pools',
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Resource',
+      }),
+      'appapipoolsGET7982554F': dict({
+        'Properties': dict({
+          'AuthorizationType': 'NONE',
+          'HttpMethod': 'GET',
+          'Integration': dict({
+            'IntegrationHttpMethod': 'POST',
+            'Type': 'AWS_PROXY',
+            'Uri': dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:',
+                  dict({
+                    'Ref': 'AWS::Partition',
+                  }),
+                  ':apigateway:',
+                  dict({
+                    'Ref': 'AWS::Region',
+                  }),
+                  ':lambda:path/2015-03-31/functions/',
+                  dict({
+                    'Fn::GetAtt': list([
+                      'applistpoolfunction398F1E85',
+                      'Arn',
+                    ]),
+                  }),
+                  '/invocations',
+                ]),
+              ]),
+            }),
+          }),
+          'ResourceId': dict({
+            'Ref': 'appapipools3B3E3850',
+          }),
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Method',
+      }),
+      'appapipoolsGETApiPermissionTesttestappapi5D10A3C2GETpools71B3509A': dict({
+        'Properties': dict({
+          'Action': 'lambda:InvokeFunction',
+          'FunctionName': dict({
+            'Fn::GetAtt': list([
+              'applistpoolfunction398F1E85',
+              'Arn',
+            ]),
+          }),
+          'Principal': 'apigateway.amazonaws.com',
+          'SourceArn': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'arn:',
+                dict({
+                  'Ref': 'AWS::Partition',
+                }),
+                ':execute-api:',
+                dict({
+                  'Ref': 'AWS::Region',
+                }),
+                ':',
+                dict({
+                  'Ref': 'AWS::AccountId',
+                }),
+                ':',
+                dict({
+                  'Ref': 'appapi049EFCB7',
+                }),
+                '/test-invoke-stage/GET/pools',
+              ]),
+            ]),
+          }),
+        }),
+        'Type': 'AWS::Lambda::Permission',
+      }),
+      'appapipoolsGETApiPermissiontestappapi5D10A3C2GETpools2A7B37C7': dict({
+        'Properties': dict({
+          'Action': 'lambda:InvokeFunction',
+          'FunctionName': dict({
+            'Fn::GetAtt': list([
+              'applistpoolfunction398F1E85',
+              'Arn',
+            ]),
+          }),
+          'Principal': 'apigateway.amazonaws.com',
+          'SourceArn': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'arn:',
+                dict({
+                  'Ref': 'AWS::Partition',
+                }),
+                ':execute-api:',
+                dict({
+                  'Ref': 'AWS::Region',
+                }),
+                ':',
+                dict({
+                  'Ref': 'AWS::AccountId',
+                }),
+                ':',
+                dict({
+                  'Ref': 'appapi049EFCB7',
+                }),
+                '/',
+                dict({
+                  'Ref': 'appapiDeploymentStageprod86597867',
+                }),
+                '/GET/pools',
+              ]),
+            ]),
+          }),
+        }),
+        'Type': 'AWS::Lambda::Permission',
+      }),
+      'appapipoolsOPTIONSBB1429DE': dict({
+        'Properties': dict({
+          'ApiKeyRequired': False,
+          'AuthorizationType': 'NONE',
+          'HttpMethod': 'OPTIONS',
+          'Integration': dict({
+            'IntegrationResponses': list([
+              dict({
+                'ResponseParameters': dict({
+                  'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                  'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                  'method.response.header.Access-Control-Allow-Origin': "'*'",
+                }),
+                'StatusCode': '204',
+              }),
+            ]),
+            'RequestTemplates': dict({
+              'application/json': '{ statusCode: 200 }',
+            }),
+            'Type': 'MOCK',
+          }),
+          'MethodResponses': list([
+            dict({
+              'ResponseParameters': dict({
+                'method.response.header.Access-Control-Allow-Headers': True,
+                'method.response.header.Access-Control-Allow-Methods': True,
+                'method.response.header.Access-Control-Allow-Origin': True,
+              }),
+              'StatusCode': '204',
+            }),
+          ]),
+          'ResourceId': dict({
+            'Ref': 'appapipools3B3E3850',
+          }),
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Method',
+      }),
+      'appapipoolspoolnameA374D274': dict({
+        'Properties': dict({
+          'ParentId': dict({
+            'Ref': 'appapipools3B3E3850',
+          }),
+          'PathPart': '{pool_name}',
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Resource',
+      }),
+      'appapipoolspoolnameDELETE7A5261B5': dict({
+        'Properties': dict({
+          'AuthorizationType': 'NONE',
+          'HttpMethod': 'DELETE',
+          'Integration': dict({
+            'IntegrationHttpMethod': 'POST',
+            'Type': 'AWS_PROXY',
+            'Uri': dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:',
+                  dict({
+                    'Ref': 'AWS::Partition',
+                  }),
+                  ':apigateway:',
+                  dict({
+                    'Ref': 'AWS::Region',
+                  }),
+                  ':lambda:path/2015-03-31/functions/',
+                  dict({
+                    'Fn::GetAtt': list([
+                      'appdeletepoolfunction3B223939',
+                      'Arn',
+                    ]),
+                  }),
+                  '/invocations',
+                ]),
+              ]),
+            }),
+          }),
+          'ResourceId': dict({
+            'Ref': 'appapipoolspoolnameA374D274',
+          }),
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Method',
+      }),
+      'appapipoolspoolnameDELETEApiPermissionTesttestappapi5D10A3C2DELETEpoolspoolname5685780B': dict({
+        'Properties': dict({
+          'Action': 'lambda:InvokeFunction',
+          'FunctionName': dict({
+            'Fn::GetAtt': list([
+              'appdeletepoolfunction3B223939',
+              'Arn',
+            ]),
+          }),
+          'Principal': 'apigateway.amazonaws.com',
+          'SourceArn': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'arn:',
+                dict({
+                  'Ref': 'AWS::Partition',
+                }),
+                ':execute-api:',
+                dict({
+                  'Ref': 'AWS::Region',
+                }),
+                ':',
+                dict({
+                  'Ref': 'AWS::AccountId',
+                }),
+                ':',
+                dict({
+                  'Ref': 'appapi049EFCB7',
+                }),
+                '/test-invoke-stage/DELETE/pools/*',
+              ]),
+            ]),
+          }),
+        }),
+        'Type': 'AWS::Lambda::Permission',
+      }),
+      'appapipoolspoolnameDELETEApiPermissiontestappapi5D10A3C2DELETEpoolspoolname54247B28': dict({
+        'Properties': dict({
+          'Action': 'lambda:InvokeFunction',
+          'FunctionName': dict({
+            'Fn::GetAtt': list([
+              'appdeletepoolfunction3B223939',
+              'Arn',
+            ]),
+          }),
+          'Principal': 'apigateway.amazonaws.com',
+          'SourceArn': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'arn:',
+                dict({
+                  'Ref': 'AWS::Partition',
+                }),
+                ':execute-api:',
+                dict({
+                  'Ref': 'AWS::Region',
+                }),
+                ':',
+                dict({
+                  'Ref': 'AWS::AccountId',
+                }),
+                ':',
+                dict({
+                  'Ref': 'appapi049EFCB7',
+                }),
+                '/',
+                dict({
+                  'Ref': 'appapiDeploymentStageprod86597867',
+                }),
+                '/DELETE/pools/*',
+              ]),
+            ]),
+          }),
+        }),
+        'Type': 'AWS::Lambda::Permission',
+      }),
+      'appapipoolspoolnameOPTIONS5BC9EE31': dict({
+        'Properties': dict({
+          'ApiKeyRequired': False,
+          'AuthorizationType': 'NONE',
+          'HttpMethod': 'OPTIONS',
+          'Integration': dict({
+            'IntegrationResponses': list([
+              dict({
+                'ResponseParameters': dict({
+                  'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                  'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                  'method.response.header.Access-Control-Allow-Origin': "'*'",
+                }),
+                'StatusCode': '204',
+              }),
+            ]),
+            'RequestTemplates': dict({
+              'application/json': '{ statusCode: 200 }',
+            }),
+            'Type': 'MOCK',
+          }),
+          'MethodResponses': list([
+            dict({
+              'ResponseParameters': dict({
+                'method.response.header.Access-Control-Allow-Headers': True,
+                'method.response.header.Access-Control-Allow-Methods': True,
+                'method.response.header.Access-Control-Allow-Origin': True,
+              }),
+              'StatusCode': '204',
+            }),
+          ]),
+          'ResourceId': dict({
+            'Ref': 'appapipoolspoolnameA374D274',
+          }),
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Method',
+      }),
+      'appapipoolspoolnamePOST90880D81': dict({
+        'Properties': dict({
+          'AuthorizationType': 'NONE',
+          'HttpMethod': 'POST',
+          'Integration': dict({
+            'IntegrationHttpMethod': 'POST',
+            'Type': 'AWS_PROXY',
+            'Uri': dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:',
+                  dict({
+                    'Ref': 'AWS::Partition',
+                  }),
+                  ':apigateway:',
+                  dict({
+                    'Ref': 'AWS::Region',
+                  }),
+                  ':lambda:path/2015-03-31/functions/',
+                  dict({
+                    'Fn::GetAtt': list([
+                      'appcreatepoolfunction57AE64A7',
+                      'Arn',
+                    ]),
+                  }),
+                  '/invocations',
+                ]),
+              ]),
+            }),
+          }),
+          'ResourceId': dict({
+            'Ref': 'appapipoolspoolnameA374D274',
+          }),
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Method',
+      }),
+      'appapipoolspoolnamePOSTApiPermissionTesttestappapi5D10A3C2POSTpoolspoolname3C8DDF94': dict({
+        'Properties': dict({
+          'Action': 'lambda:InvokeFunction',
+          'FunctionName': dict({
+            'Fn::GetAtt': list([
+              'appcreatepoolfunction57AE64A7',
+              'Arn',
+            ]),
+          }),
+          'Principal': 'apigateway.amazonaws.com',
+          'SourceArn': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'arn:',
+                dict({
+                  'Ref': 'AWS::Partition',
+                }),
+                ':execute-api:',
+                dict({
+                  'Ref': 'AWS::Region',
+                }),
+                ':',
+                dict({
+                  'Ref': 'AWS::AccountId',
+                }),
+                ':',
+                dict({
+                  'Ref': 'appapi049EFCB7',
+                }),
+                '/test-invoke-stage/POST/pools/*',
+              ]),
+            ]),
+          }),
+        }),
+        'Type': 'AWS::Lambda::Permission',
+      }),
+      'appapipoolspoolnamePOSTApiPermissiontestappapi5D10A3C2POSTpoolspoolname1281254C': dict({
+        'Properties': dict({
+          'Action': 'lambda:InvokeFunction',
+          'FunctionName': dict({
+            'Fn::GetAtt': list([
+              'appcreatepoolfunction57AE64A7',
+              'Arn',
+            ]),
+          }),
+          'Principal': 'apigateway.amazonaws.com',
+          'SourceArn': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'arn:',
+                dict({
+                  'Ref': 'AWS::Partition',
+                }),
+                ':execute-api:',
+                dict({
+                  'Ref': 'AWS::Region',
+                }),
+                ':',
+                dict({
+                  'Ref': 'AWS::AccountId',
+                }),
+                ':',
+                dict({
+                  'Ref': 'appapi049EFCB7',
+                }),
+                '/',
+                dict({
+                  'Ref': 'appapiDeploymentStageprod86597867',
+                }),
+                '/POST/pools/*',
+              ]),
+            ]),
+          }),
+        }),
+        'Type': 'AWS::Lambda::Permission',
+      }),
+      'appapipoolspoolnamedice42B646CD': dict({
+        'Properties': dict({
+          'ParentId': dict({
+            'Ref': 'appapipoolspoolnameA374D274',
+          }),
+          'PathPart': 'dice',
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Resource',
+      }),
+      'appapipoolspoolnamediceGET47C40AE8': dict({
+        'Properties': dict({
+          'AuthorizationType': 'NONE',
+          'HttpMethod': 'GET',
+          'Integration': dict({
+            'IntegrationHttpMethod': 'POST',
+            'Type': 'AWS_PROXY',
+            'Uri': dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:',
+                  dict({
+                    'Ref': 'AWS::Partition',
+                  }),
+                  ':apigateway:',
+                  dict({
+                    'Ref': 'AWS::Region',
+                  }),
+                  ':lambda:path/2015-03-31/functions/',
+                  dict({
+                    'Fn::GetAtt': list([
+                      'appdicefunction53F0EADF',
+                      'Arn',
+                    ]),
+                  }),
+                  '/invocations',
+                ]),
+              ]),
+            }),
+          }),
+          'ResourceId': dict({
+            'Ref': 'appapipoolspoolnamedice42B646CD',
+          }),
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Method',
+      }),
+      'appapipoolspoolnamediceGETApiPermissionTesttestappapi5D10A3C2GETpoolspoolnamediceFFBE4807': dict({
+        'Properties': dict({
+          'Action': 'lambda:InvokeFunction',
+          'FunctionName': dict({
+            'Fn::GetAtt': list([
+              'appdicefunction53F0EADF',
+              'Arn',
+            ]),
+          }),
+          'Principal': 'apigateway.amazonaws.com',
+          'SourceArn': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'arn:',
+                dict({
+                  'Ref': 'AWS::Partition',
+                }),
+                ':execute-api:',
+                dict({
+                  'Ref': 'AWS::Region',
+                }),
+                ':',
+                dict({
+                  'Ref': 'AWS::AccountId',
+                }),
+                ':',
+                dict({
+                  'Ref': 'appapi049EFCB7',
+                }),
+                '/test-invoke-stage/GET/pools/*/dice',
+              ]),
+            ]),
+          }),
+        }),
+        'Type': 'AWS::Lambda::Permission',
+      }),
+      'appapipoolspoolnamediceGETApiPermissiontestappapi5D10A3C2GETpoolspoolnamedice34188199': dict({
+        'Properties': dict({
+          'Action': 'lambda:InvokeFunction',
+          'FunctionName': dict({
+            'Fn::GetAtt': list([
+              'appdicefunction53F0EADF',
+              'Arn',
+            ]),
+          }),
+          'Principal': 'apigateway.amazonaws.com',
+          'SourceArn': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'arn:',
+                dict({
+                  'Ref': 'AWS::Partition',
+                }),
+                ':execute-api:',
+                dict({
+                  'Ref': 'AWS::Region',
+                }),
+                ':',
+                dict({
+                  'Ref': 'AWS::AccountId',
+                }),
+                ':',
+                dict({
+                  'Ref': 'appapi049EFCB7',
+                }),
+                '/',
+                dict({
+                  'Ref': 'appapiDeploymentStageprod86597867',
+                }),
+                '/GET/pools/*/dice',
+              ]),
+            ]),
+          }),
+        }),
+        'Type': 'AWS::Lambda::Permission',
+      }),
+      'appapipoolspoolnamediceOPTIONS9D5B5903': dict({
+        'Properties': dict({
+          'ApiKeyRequired': False,
+          'AuthorizationType': 'NONE',
+          'HttpMethod': 'OPTIONS',
+          'Integration': dict({
+            'IntegrationResponses': list([
+              dict({
+                'ResponseParameters': dict({
+                  'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                  'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                  'method.response.header.Access-Control-Allow-Origin': "'*'",
+                }),
+                'StatusCode': '204',
+              }),
+            ]),
+            'RequestTemplates': dict({
+              'application/json': '{ statusCode: 200 }',
+            }),
+            'Type': 'MOCK',
+          }),
+          'MethodResponses': list([
+            dict({
+              'ResponseParameters': dict({
+                'method.response.header.Access-Control-Allow-Headers': True,
+                'method.response.header.Access-Control-Allow-Methods': True,
+                'method.response.header.Access-Control-Allow-Origin': True,
+              }),
+              'StatusCode': '204',
+            }),
+          ]),
+          'ResourceId': dict({
+            'Ref': 'appapipoolspoolnamedice42B646CD',
+          }),
+          'RestApiId': dict({
+            'Ref': 'appapi049EFCB7',
+          }),
+        }),
+        'Type': 'AWS::ApiGateway::Method',
+      }),
+      'appcreatepoolalarmC865A323': dict({
+        'Properties': dict({
+          'ActionsEnabled': True,
+          'AlarmActions': list([
+            dict({
+              'Ref': 'infratopic6BC6CAE6',
+            }),
+          ]),
+          'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
+          'EvaluationPeriods': 1,
+          'MetricName': 'create_pool_error',
+          'Namespace': 'destiny_dice',
+          'Period': 300,
+          'Statistic': 'Average',
+          'Threshold': 1,
+        }),
+        'Type': 'AWS::CloudWatch::Alarm',
+      }),
+      'appcreatepoolfunction57AE64A7': dict({
+        'DependsOn': list([
+          'appcreatepoolfunctionServiceRoleDefaultPolicyC34545C0',
+          'appcreatepoolfunctionServiceRoleB3DB38B8',
+        ]),
+        'Properties': dict({
+          'Code': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+            'S3Key': str,
+          }),
+          'Environment': dict({
+            'Variables': dict({
+              'ITEM_TABLE_NAME': dict({
+                'Ref': 'infraitem5676F098',
+              }),
+              'LOG_LEVEL': 'INFO',
+              'POOL_TABLE_NAME': dict({
+                'Ref': 'infrapool703222C6',
+              }),
+              'POWERTOOLS_SERVICE_NAME': 'create_pool',
+            }),
+          }),
+          'Handler': 'lambda_function.lambda_handler',
+          'Layers': list([
+            dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:aws:lambda:',
+                  dict({
+                    'Ref': 'AWS::Region',
+                  }),
+                  ':017000801446:layer:AWSLambdaPowertoolsPythonV2:40',
+                ]),
+              ]),
+            }),
+            dict({
+              'Ref': 'appcreatepoollib5BDB7416',
+            }),
+          ]),
+          'MemorySize': 128,
+          'Role': dict({
+            'Fn::GetAtt': list([
+              'appcreatepoolfunctionServiceRoleB3DB38B8',
+              'Arn',
+            ]),
+          }),
+          'Runtime': 'python3.11',
+        }),
+        'Type': 'AWS::Lambda::Function',
+      }),
+      'appcreatepoolfunctionServiceRoleB3DB38B8': dict({
+        'Properties': dict({
+          'AssumeRolePolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': 'sts:AssumeRole',
+                'Effect': 'Allow',
+                'Principal': dict({
+                  'Service': 'lambda.amazonaws.com',
+                }),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'ManagedPolicyArns': list([
+            dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:',
+                  dict({
+                    'Ref': 'AWS::Partition',
+                  }),
+                  ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
+                ]),
+              ]),
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Role',
+      }),
+      'appcreatepoolfunctionServiceRoleDefaultPolicyC34545C0': dict({
+        'Properties': dict({
+          'PolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': list([
+                  'dynamodb:BatchGetItem',
+                  'dynamodb:GetRecords',
+                  'dynamodb:GetShardIterator',
+                  'dynamodb:Query',
+                  'dynamodb:GetItem',
+                  'dynamodb:Scan',
+                  'dynamodb:ConditionCheckItem',
+                  'dynamodb:BatchWriteItem',
+                  'dynamodb:PutItem',
+                  'dynamodb:UpdateItem',
+                  'dynamodb:DeleteItem',
+                  'dynamodb:DescribeTable',
+                ]),
+                'Effect': 'Allow',
+                'Resource': list([
+                  dict({
+                    'Fn::GetAtt': list([
+                      'infrapool703222C6',
+                      'Arn',
+                    ]),
+                  }),
+                  dict({
+                    'Ref': 'AWS::NoValue',
+                  }),
+                ]),
+              }),
+              dict({
+                'Action': list([
+                  'dynamodb:BatchGetItem',
+                  'dynamodb:GetRecords',
+                  'dynamodb:GetShardIterator',
+                  'dynamodb:Query',
+                  'dynamodb:GetItem',
+                  'dynamodb:Scan',
+                  'dynamodb:ConditionCheckItem',
+                  'dynamodb:BatchWriteItem',
+                  'dynamodb:PutItem',
+                  'dynamodb:UpdateItem',
+                  'dynamodb:DeleteItem',
+                  'dynamodb:DescribeTable',
+                ]),
+                'Effect': 'Allow',
+                'Resource': list([
+                  dict({
+                    'Fn::GetAtt': list([
+                      'infraitem5676F098',
+                      'Arn',
+                    ]),
+                  }),
+                  dict({
+                    'Ref': 'AWS::NoValue',
+                  }),
+                ]),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'PolicyName': 'appcreatepoolfunctionServiceRoleDefaultPolicyC34545C0',
+          'Roles': list([
+            dict({
+              'Ref': 'appcreatepoolfunctionServiceRoleB3DB38B8',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Policy',
+      }),
+      'appcreatepoollambdaerrorC95E4A68': dict({
+        'Properties': dict({
+          'ActionsEnabled': True,
+          'AlarmActions': list([
+            dict({
+              'Ref': 'infratopic6BC6CAE6',
+            }),
+          ]),
+          'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
+          'EvaluationPeriods': 1,
+          'MetricName': 'Errors',
+          'Namespace': 'AWS/Lambda',
+          'Period': 300,
+          'Statistic': 'Sum',
+          'Threshold': 1,
+        }),
+        'Type': 'AWS::CloudWatch::Alarm',
+      }),
+      'appcreatepoollib5BDB7416': dict({
+        'Properties': dict({
+          'CompatibleRuntimes': list([
+            'python3.11',
+          ]),
+          'Content': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+            'S3Key': str,
+          }),
+        }),
+        'Type': 'AWS::Lambda::LayerVersion',
+      }),
+      'appcreatepoollogs2430AB7F': dict({
+        'DeletionPolicy': 'Delete',
+        'Properties': dict({
+          'LogGroupName': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                '/aws/lambda/',
+                dict({
+                  'Ref': 'appcreatepoolfunction57AE64A7',
+                }),
+              ]),
+            ]),
+          }),
+          'RetentionInDays': 400,
+        }),
+        'Type': 'AWS::Logs::LogGroup',
+        'UpdateReplacePolicy': 'Delete',
+      }),
+      'appcreatepoollogslogerror9DB8B9E7': dict({
+        'Properties': dict({
+          'FilterName': 'ERROR',
+          'FilterPattern': '{ $.level = "ERROR" }',
+          'LogGroupName': dict({
+            'Ref': 'appcreatepoollogs2430AB7F',
+          }),
+          'MetricTransformations': list([
+            dict({
+              'MetricName': 'create_pool_error',
+              'MetricNamespace': 'destiny_dice',
+              'MetricValue': '1',
+              'Unit': 'Count',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::Logs::MetricFilter',
+      }),
+      'appdeletepoolalarm55F3063F': dict({
+        'Properties': dict({
+          'ActionsEnabled': True,
+          'AlarmActions': list([
+            dict({
+              'Ref': 'infratopic6BC6CAE6',
+            }),
+          ]),
+          'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
+          'EvaluationPeriods': 1,
+          'MetricName': 'delete_pool_error',
+          'Namespace': 'destiny_dice',
+          'Period': 300,
+          'Statistic': 'Average',
+          'Threshold': 1,
+        }),
+        'Type': 'AWS::CloudWatch::Alarm',
+      }),
+      'appdeletepoolfunction3B223939': dict({
+        'DependsOn': list([
+          'appdeletepoolfunctionServiceRoleDefaultPolicy5FE43E01',
+          'appdeletepoolfunctionServiceRole0EA2BC37',
+        ]),
+        'Properties': dict({
+          'Code': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+            'S3Key': str,
+          }),
+          'Environment': dict({
+            'Variables': dict({
+              'ITEM_TABLE_NAME': dict({
+                'Ref': 'infraitem5676F098',
+              }),
+              'LOG_LEVEL': 'INFO',
+              'POOL_TABLE_NAME': dict({
+                'Ref': 'infrapool703222C6',
+              }),
+              'POWERTOOLS_SERVICE_NAME': 'delete_pool',
+            }),
+          }),
+          'Handler': 'lambda_function.lambda_handler',
+          'Layers': list([
+            dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:aws:lambda:',
+                  dict({
+                    'Ref': 'AWS::Region',
+                  }),
+                  ':017000801446:layer:AWSLambdaPowertoolsPythonV2:40',
+                ]),
+              ]),
+            }),
+            dict({
+              'Ref': 'appdeletepoollib69C0D1AD',
+            }),
+          ]),
+          'MemorySize': 128,
+          'Role': dict({
+            'Fn::GetAtt': list([
+              'appdeletepoolfunctionServiceRole0EA2BC37',
+              'Arn',
+            ]),
+          }),
+          'Runtime': 'python3.11',
+        }),
+        'Type': 'AWS::Lambda::Function',
+      }),
+      'appdeletepoolfunctionServiceRole0EA2BC37': dict({
+        'Properties': dict({
+          'AssumeRolePolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': 'sts:AssumeRole',
+                'Effect': 'Allow',
+                'Principal': dict({
+                  'Service': 'lambda.amazonaws.com',
+                }),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'ManagedPolicyArns': list([
+            dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:',
+                  dict({
+                    'Ref': 'AWS::Partition',
+                  }),
+                  ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
+                ]),
+              ]),
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Role',
+      }),
+      'appdeletepoolfunctionServiceRoleDefaultPolicy5FE43E01': dict({
+        'Properties': dict({
+          'PolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': list([
+                  'dynamodb:BatchGetItem',
+                  'dynamodb:GetRecords',
+                  'dynamodb:GetShardIterator',
+                  'dynamodb:Query',
+                  'dynamodb:GetItem',
+                  'dynamodb:Scan',
+                  'dynamodb:ConditionCheckItem',
+                  'dynamodb:BatchWriteItem',
+                  'dynamodb:PutItem',
+                  'dynamodb:UpdateItem',
+                  'dynamodb:DeleteItem',
+                  'dynamodb:DescribeTable',
+                ]),
+                'Effect': 'Allow',
+                'Resource': list([
+                  dict({
+                    'Fn::GetAtt': list([
+                      'infrapool703222C6',
+                      'Arn',
+                    ]),
+                  }),
+                  dict({
+                    'Ref': 'AWS::NoValue',
+                  }),
+                ]),
+              }),
+              dict({
+                'Action': list([
+                  'dynamodb:BatchGetItem',
+                  'dynamodb:GetRecords',
+                  'dynamodb:GetShardIterator',
+                  'dynamodb:Query',
+                  'dynamodb:GetItem',
+                  'dynamodb:Scan',
+                  'dynamodb:ConditionCheckItem',
+                  'dynamodb:BatchWriteItem',
+                  'dynamodb:PutItem',
+                  'dynamodb:UpdateItem',
+                  'dynamodb:DeleteItem',
+                  'dynamodb:DescribeTable',
+                ]),
+                'Effect': 'Allow',
+                'Resource': list([
+                  dict({
+                    'Fn::GetAtt': list([
+                      'infraitem5676F098',
+                      'Arn',
+                    ]),
+                  }),
+                  dict({
+                    'Ref': 'AWS::NoValue',
+                  }),
+                ]),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'PolicyName': 'appdeletepoolfunctionServiceRoleDefaultPolicy5FE43E01',
+          'Roles': list([
+            dict({
+              'Ref': 'appdeletepoolfunctionServiceRole0EA2BC37',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Policy',
+      }),
+      'appdeletepoollambdaerror026DB39D': dict({
+        'Properties': dict({
+          'ActionsEnabled': True,
+          'AlarmActions': list([
+            dict({
+              'Ref': 'infratopic6BC6CAE6',
+            }),
+          ]),
+          'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
+          'EvaluationPeriods': 1,
+          'MetricName': 'Errors',
+          'Namespace': 'AWS/Lambda',
+          'Period': 300,
+          'Statistic': 'Sum',
+          'Threshold': 1,
+        }),
+        'Type': 'AWS::CloudWatch::Alarm',
+      }),
+      'appdeletepoollib69C0D1AD': dict({
+        'Properties': dict({
+          'CompatibleRuntimes': list([
+            'python3.11',
+          ]),
+          'Content': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+            'S3Key': str,
+          }),
+        }),
+        'Type': 'AWS::Lambda::LayerVersion',
+      }),
+      'appdeletepoollogsE7D6EA50': dict({
+        'DeletionPolicy': 'Delete',
+        'Properties': dict({
+          'LogGroupName': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                '/aws/lambda/',
+                dict({
+                  'Ref': 'appdeletepoolfunction3B223939',
+                }),
+              ]),
+            ]),
+          }),
+          'RetentionInDays': 400,
+        }),
+        'Type': 'AWS::Logs::LogGroup',
+        'UpdateReplacePolicy': 'Delete',
+      }),
+      'appdeletepoollogslogerrorBC0FFD55': dict({
+        'Properties': dict({
+          'FilterName': 'ERROR',
+          'FilterPattern': '{ $.level = "ERROR" }',
+          'LogGroupName': dict({
+            'Ref': 'appdeletepoollogsE7D6EA50',
+          }),
+          'MetricTransformations': list([
+            dict({
+              'MetricName': 'delete_pool_error',
+              'MetricNamespace': 'destiny_dice',
+              'MetricValue': '1',
+              'Unit': 'Count',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::Logs::MetricFilter',
+      }),
+      'appdicealarmACC0203B': dict({
+        'Properties': dict({
+          'ActionsEnabled': True,
+          'AlarmActions': list([
+            dict({
+              'Ref': 'infratopic6BC6CAE6',
+            }),
+          ]),
+          'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
+          'EvaluationPeriods': 1,
+          'MetricName': 'dice_error',
+          'Namespace': 'destiny_dice',
+          'Period': 300,
+          'Statistic': 'Average',
+          'Threshold': 1,
+        }),
+        'Type': 'AWS::CloudWatch::Alarm',
+      }),
+      'appdicefunction53F0EADF': dict({
+        'DependsOn': list([
+          'appdicefunctionServiceRoleDefaultPolicyAC5BFB2C',
+          'appdicefunctionServiceRoleE237AC50',
+        ]),
+        'Properties': dict({
+          'Code': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+            'S3Key': str,
+          }),
+          'Environment': dict({
+            'Variables': dict({
+              'ITEM_TABLE_NAME': dict({
+                'Ref': 'infraitem5676F098',
+              }),
+              'LOG_LEVEL': 'INFO',
+              'POOL_TABLE_NAME': dict({
+                'Ref': 'infrapool703222C6',
+              }),
+              'POWERTOOLS_SERVICE_NAME': 'dice',
+            }),
+          }),
+          'Handler': 'lambda_function.lambda_handler',
+          'Layers': list([
+            dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:aws:lambda:',
+                  dict({
+                    'Ref': 'AWS::Region',
+                  }),
+                  ':017000801446:layer:AWSLambdaPowertoolsPythonV2:40',
+                ]),
+              ]),
+            }),
+            dict({
+              'Ref': 'appdicelib92529DB6',
+            }),
+          ]),
+          'MemorySize': 128,
+          'Role': dict({
+            'Fn::GetAtt': list([
+              'appdicefunctionServiceRoleE237AC50',
+              'Arn',
+            ]),
+          }),
+          'Runtime': 'python3.11',
+        }),
+        'Type': 'AWS::Lambda::Function',
+      }),
+      'appdicefunctionServiceRoleDefaultPolicyAC5BFB2C': dict({
+        'Properties': dict({
+          'PolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': list([
+                  'dynamodb:BatchGetItem',
+                  'dynamodb:GetRecords',
+                  'dynamodb:GetShardIterator',
+                  'dynamodb:Query',
+                  'dynamodb:GetItem',
+                  'dynamodb:Scan',
+                  'dynamodb:ConditionCheckItem',
+                  'dynamodb:DescribeTable',
+                ]),
+                'Effect': 'Allow',
+                'Resource': list([
+                  dict({
+                    'Fn::GetAtt': list([
+                      'infrapool703222C6',
+                      'Arn',
+                    ]),
+                  }),
+                  dict({
+                    'Ref': 'AWS::NoValue',
+                  }),
+                ]),
+              }),
+              dict({
+                'Action': list([
+                  'dynamodb:BatchGetItem',
+                  'dynamodb:GetRecords',
+                  'dynamodb:GetShardIterator',
+                  'dynamodb:Query',
+                  'dynamodb:GetItem',
+                  'dynamodb:Scan',
+                  'dynamodb:ConditionCheckItem',
+                  'dynamodb:DescribeTable',
+                ]),
+                'Effect': 'Allow',
+                'Resource': list([
+                  dict({
+                    'Fn::GetAtt': list([
+                      'infraitem5676F098',
+                      'Arn',
+                    ]),
+                  }),
+                  dict({
+                    'Ref': 'AWS::NoValue',
+                  }),
+                ]),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'PolicyName': 'appdicefunctionServiceRoleDefaultPolicyAC5BFB2C',
+          'Roles': list([
+            dict({
+              'Ref': 'appdicefunctionServiceRoleE237AC50',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Policy',
+      }),
+      'appdicefunctionServiceRoleE237AC50': dict({
+        'Properties': dict({
+          'AssumeRolePolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': 'sts:AssumeRole',
+                'Effect': 'Allow',
+                'Principal': dict({
+                  'Service': 'lambda.amazonaws.com',
+                }),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'ManagedPolicyArns': list([
+            dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:',
+                  dict({
+                    'Ref': 'AWS::Partition',
+                  }),
+                  ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
+                ]),
+              ]),
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Role',
+      }),
+      'appdicelambdaerrorEA3D4B4B': dict({
+        'Properties': dict({
+          'ActionsEnabled': True,
+          'AlarmActions': list([
+            dict({
+              'Ref': 'infratopic6BC6CAE6',
+            }),
+          ]),
+          'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
+          'EvaluationPeriods': 1,
+          'MetricName': 'Errors',
+          'Namespace': 'AWS/Lambda',
+          'Period': 300,
+          'Statistic': 'Sum',
+          'Threshold': 1,
+        }),
+        'Type': 'AWS::CloudWatch::Alarm',
+      }),
+      'appdicelib92529DB6': dict({
+        'Properties': dict({
+          'CompatibleRuntimes': list([
+            'python3.11',
+          ]),
+          'Content': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+            'S3Key': str,
+          }),
+        }),
+        'Type': 'AWS::Lambda::LayerVersion',
+      }),
+      'appdicelogs06779EFF': dict({
+        'DeletionPolicy': 'Delete',
+        'Properties': dict({
+          'LogGroupName': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                '/aws/lambda/',
+                dict({
+                  'Ref': 'appdicefunction53F0EADF',
+                }),
+              ]),
+            ]),
+          }),
+          'RetentionInDays': 400,
+        }),
+        'Type': 'AWS::Logs::LogGroup',
+        'UpdateReplacePolicy': 'Delete',
+      }),
+      'appdicelogslogerror389B03CD': dict({
+        'Properties': dict({
+          'FilterName': 'ERROR',
+          'FilterPattern': '{ $.level = "ERROR" }',
+          'LogGroupName': dict({
+            'Ref': 'appdicelogs06779EFF',
+          }),
+          'MetricTransformations': list([
+            dict({
+              'MetricName': 'dice_error',
+              'MetricNamespace': 'destiny_dice',
+              'MetricValue': '1',
+              'Unit': 'Count',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::Logs::MetricFilter',
+      }),
+      'applistpoolalarm05F5FF09': dict({
+        'Properties': dict({
+          'ActionsEnabled': True,
+          'AlarmActions': list([
+            dict({
+              'Ref': 'infratopic6BC6CAE6',
+            }),
+          ]),
+          'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
+          'EvaluationPeriods': 1,
+          'MetricName': 'list_pool_error',
+          'Namespace': 'destiny_dice',
+          'Period': 300,
+          'Statistic': 'Average',
+          'Threshold': 1,
+        }),
+        'Type': 'AWS::CloudWatch::Alarm',
+      }),
+      'applistpoolfunction398F1E85': dict({
+        'DependsOn': list([
+          'applistpoolfunctionServiceRoleDefaultPolicy7AB5BF6A',
+          'applistpoolfunctionServiceRole5CFACBA6',
+        ]),
+        'Properties': dict({
+          'Code': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+            'S3Key': str,
+          }),
+          'Environment': dict({
+            'Variables': dict({
+              'LOG_LEVEL': 'INFO',
+              'POOL_TABLE_NAME': dict({
+                'Ref': 'infrapool703222C6',
+              }),
+              'POWERTOOLS_SERVICE_NAME': 'list_pool',
+            }),
+          }),
+          'Handler': 'lambda_function.lambda_handler',
+          'Layers': list([
+            dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:aws:lambda:',
+                  dict({
+                    'Ref': 'AWS::Region',
+                  }),
+                  ':017000801446:layer:AWSLambdaPowertoolsPythonV2:40',
+                ]),
+              ]),
+            }),
+            dict({
+              'Ref': 'applistpoollib55E963E5',
+            }),
+          ]),
+          'MemorySize': 128,
+          'Role': dict({
+            'Fn::GetAtt': list([
+              'applistpoolfunctionServiceRole5CFACBA6',
+              'Arn',
+            ]),
+          }),
+          'Runtime': 'python3.11',
+        }),
+        'Type': 'AWS::Lambda::Function',
+      }),
+      'applistpoolfunctionServiceRole5CFACBA6': dict({
+        'Properties': dict({
+          'AssumeRolePolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': 'sts:AssumeRole',
+                'Effect': 'Allow',
+                'Principal': dict({
+                  'Service': 'lambda.amazonaws.com',
+                }),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'ManagedPolicyArns': list([
+            dict({
+              'Fn::Join': list([
+                '',
+                list([
+                  'arn:',
+                  dict({
+                    'Ref': 'AWS::Partition',
+                  }),
+                  ':iam::aws:policy/service-role/AWSLambdaBasicExecutionRole',
+                ]),
+              ]),
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Role',
+      }),
+      'applistpoolfunctionServiceRoleDefaultPolicy7AB5BF6A': dict({
+        'Properties': dict({
+          'PolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': list([
+                  'dynamodb:BatchGetItem',
+                  'dynamodb:GetRecords',
+                  'dynamodb:GetShardIterator',
+                  'dynamodb:Query',
+                  'dynamodb:GetItem',
+                  'dynamodb:Scan',
+                  'dynamodb:ConditionCheckItem',
+                  'dynamodb:DescribeTable',
+                ]),
+                'Effect': 'Allow',
+                'Resource': list([
+                  dict({
+                    'Fn::GetAtt': list([
+                      'infrapool703222C6',
+                      'Arn',
+                    ]),
+                  }),
+                  dict({
+                    'Ref': 'AWS::NoValue',
+                  }),
+                ]),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+          'PolicyName': 'applistpoolfunctionServiceRoleDefaultPolicy7AB5BF6A',
+          'Roles': list([
+            dict({
+              'Ref': 'applistpoolfunctionServiceRole5CFACBA6',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::IAM::Policy',
+      }),
+      'applistpoollambdaerror6119C7C3': dict({
+        'Properties': dict({
+          'ActionsEnabled': True,
+          'AlarmActions': list([
+            dict({
+              'Ref': 'infratopic6BC6CAE6',
+            }),
+          ]),
+          'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
+          'EvaluationPeriods': 1,
+          'MetricName': 'Errors',
+          'Namespace': 'AWS/Lambda',
+          'Period': 300,
+          'Statistic': 'Sum',
+          'Threshold': 1,
+        }),
+        'Type': 'AWS::CloudWatch::Alarm',
+      }),
+      'applistpoollib55E963E5': dict({
+        'Properties': dict({
+          'CompatibleRuntimes': list([
+            'python3.11',
+          ]),
+          'Content': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+            'S3Key': str,
+          }),
+        }),
+        'Type': 'AWS::Lambda::LayerVersion',
+      }),
+      'applistpoollogs7617F922': dict({
+        'DeletionPolicy': 'Delete',
+        'Properties': dict({
+          'LogGroupName': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                '/aws/lambda/',
+                dict({
+                  'Ref': 'applistpoolfunction398F1E85',
+                }),
+              ]),
+            ]),
+          }),
+          'RetentionInDays': 400,
+        }),
+        'Type': 'AWS::Logs::LogGroup',
+        'UpdateReplacePolicy': 'Delete',
+      }),
+      'applistpoollogslogerror4FB38122': dict({
+        'Properties': dict({
+          'FilterName': 'ERROR',
+          'FilterPattern': '{ $.level = "ERROR" }',
+          'LogGroupName': dict({
+            'Ref': 'applistpoollogs7617F922',
+          }),
+          'MetricTransformations': list([
+            dict({
+              'MetricName': 'list_pool_error',
+              'MetricNamespace': 'destiny_dice',
+              'MetricValue': '1',
+              'Unit': 'Count',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::Logs::MetricFilter',
+      }),
+      'infraitem5676F098': dict({
+        'DeletionPolicy': 'Delete',
+        'Properties': dict({
+          'AttributeDefinitions': list([
+            dict({
+              'AttributeName': 'pool_name',
+              'AttributeType': 'S',
+            }),
+            dict({
+              'AttributeName': 'item_id',
+              'AttributeType': 'N',
+            }),
+          ]),
+          'BillingMode': 'PAY_PER_REQUEST',
+          'KeySchema': list([
+            dict({
+              'AttributeName': 'pool_name',
+              'KeyType': 'HASH',
+            }),
+            dict({
+              'AttributeName': 'item_id',
+              'KeyType': 'RANGE',
+            }),
+          ]),
+          'TableName': 'dice-table-item',
+        }),
+        'Type': 'AWS::DynamoDB::Table',
+        'UpdateReplacePolicy': 'Delete',
+      }),
+      'infrapool703222C6': dict({
+        'DeletionPolicy': 'Delete',
+        'Properties': dict({
+          'AttributeDefinitions': list([
+            dict({
+              'AttributeName': 'pool_name',
+              'AttributeType': 'S',
+            }),
+          ]),
+          'BillingMode': 'PAY_PER_REQUEST',
+          'KeySchema': list([
+            dict({
+              'AttributeName': 'pool_name',
+              'KeyType': 'HASH',
+            }),
+          ]),
+          'TableName': 'dice-table-pool',
+        }),
+        'Type': 'AWS::DynamoDB::Table',
+        'UpdateReplacePolicy': 'Delete',
+      }),
+      'infratopic6BC6CAE6': dict({
+        'Properties': dict({
+          'TopicName': 'dice-topic-error_notify',
+        }),
+        'Type': 'AWS::SNS::Topic',
+      }),
+      'staticbucket1958D107': dict({
+        'DeletionPolicy': 'Delete',
+        'Properties': dict({
+          'Tags': list([
+            dict({
+              'Key': 'aws-cdk:cr-owned:fac34476',
+              'Value': 'true',
+            }),
+            dict({
+              'Key': 'Public',
+              'Value': 'True',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::S3::Bucket',
+        'UpdateReplacePolicy': 'Delete',
+      }),
+      'staticbucketPolicy4CC90295': dict({
+        'Properties': dict({
+          'Bucket': dict({
+            'Ref': 'staticbucket1958D107',
+          }),
+          'PolicyDocument': dict({
+            'Statement': list([
+              dict({
+                'Action': 's3:GetObject',
+                'Effect': 'Allow',
+                'Principal': dict({
+                  'CanonicalUser': dict({
+                    'Fn::GetAtt': list([
+                      'staticcloudfrontdistributionOrigin1S3Origin9D43FC41',
+                      'S3CanonicalUserId',
+                    ]),
+                  }),
+                }),
+                'Resource': dict({
+                  'Fn::Join': list([
+                    '',
+                    list([
+                      dict({
+                        'Fn::GetAtt': list([
+                          'staticbucket1958D107',
+                          'Arn',
+                        ]),
+                      }),
+                      '/*',
+                    ]),
+                  ]),
+                }),
+              }),
+            ]),
+            'Version': '2012-10-17',
+          }),
+        }),
+        'Type': 'AWS::S3::BucketPolicy',
+      }),
+      'staticcloudfrontdistribution26AA6F05': dict({
+        'Properties': dict({
+          'DistributionConfig': dict({
+            'DefaultCacheBehavior': dict({
+              'CachePolicyId': '658327ea-f89d-4fab-a63d-7e88639e58f6',
+              'Compress': True,
+              'TargetOriginId': 'teststaticcloudfrontdistributionOrigin13D882754',
+              'ViewerProtocolPolicy': 'allow-all',
+            }),
+            'DefaultRootObject': 'index.html',
+            'Enabled': True,
+            'HttpVersion': 'http2',
+            'IPV6Enabled': True,
+            'Origins': list([
+              dict({
+                'DomainName': dict({
+                  'Fn::GetAtt': list([
+                    'staticbucket1958D107',
+                    'RegionalDomainName',
+                  ]),
+                }),
+                'Id': 'teststaticcloudfrontdistributionOrigin13D882754',
+                'S3OriginConfig': dict({
+                  'OriginAccessIdentity': dict({
+                    'Fn::Join': list([
+                      '',
+                      list([
+                        'origin-access-identity/cloudfront/',
+                        dict({
+                          'Ref': 'staticcloudfrontdistributionOrigin1S3Origin9D43FC41',
+                        }),
+                      ]),
+                    ]),
+                  }),
+                }),
+              }),
+            ]),
+          }),
+          'Tags': list([
+            dict({
+              'Key': 'Public',
+              'Value': 'True',
+            }),
+          ]),
+        }),
+        'Type': 'AWS::CloudFront::Distribution',
+      }),
+      'staticcloudfrontdistributionOrigin1S3Origin9D43FC41': dict({
+        'Properties': dict({
+          'CloudFrontOriginAccessIdentityConfig': dict({
+            'Comment': 'Identity for teststaticcloudfrontdistributionOrigin13D882754',
+          }),
+        }),
+        'Type': 'AWS::CloudFront::CloudFrontOriginAccessIdentity',
+      }),
+      'staticdeployAwsCliLayerC71EE423': dict({
+        'Properties': dict({
+          'Content': dict({
+            'S3Bucket': dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+            'S3Key': str,
+          }),
+          'Description': '/opt/awscli/aws',
+        }),
+        'Type': 'AWS::Lambda::LayerVersion',
+      }),
+      'staticdeployCustomResource123302A9': dict({
+        'DeletionPolicy': 'Delete',
+        'Properties': dict({
+          'DestinationBucketName': dict({
+            'Ref': 'staticbucket1958D107',
+          }),
+          'DistributionId': dict({
+            'Ref': 'staticcloudfrontdistribution26AA6F05',
+          }),
+          'DistributionPaths': list([
+            '/*',
+          ]),
+          'Prune': True,
+          'ServiceToken': dict({
+            'Fn::GetAtt': list([
+              'CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536',
+              'Arn',
+            ]),
+          }),
+          'SourceBucketNames': list([
+            dict({
+              'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
+            }),
+          ]),
+          'SourceObjectKeys': list([
+            'e7e75259f8bd86c013aac4ad22a7a75ed97f0c34abc534665cf753be1dd9f81f.zip',
+          ]),
+        }),
+        'Type': 'Custom::CDKBucketDeployment',
+        'UpdateReplacePolicy': 'Delete',
+      }),
+    }),
+    'Rules': dict({
+      'CheckBootstrapVersion': dict({
+        'Assertions': list([
+          dict({
+            'Assert': dict({
+              'Fn::Not': list([
+                dict({
+                  'Fn::Contains': list([
+                    list([
+                      '1',
+                      '2',
+                      '3',
+                      '4',
+                      '5',
+                    ]),
+                    dict({
+                      'Ref': 'BootstrapVersion',
+                    }),
+                  ]),
+                }),
+              ]),
+            }),
+            'AssertDescription': "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+          }),
+        ]),
+      }),
+    }),
+  })
+# ---

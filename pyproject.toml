@@ -48,7 +48,12 @@ extend-exclude = [
     ".layers", # lambda layer
 ]
 
-format = "junit"
+[tool.ruff.per-file-ignores]
+"tests/**.py" = [
+    "ANN001",  # test fixtures
+    "ANN201",  # Missing return type annotation
+    "PLR2004", # magic-value-comparison
+]
 
 [tool.mypy]
 python_version = "3.11"
