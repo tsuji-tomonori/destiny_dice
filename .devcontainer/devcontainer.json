@@ -3,8 +3,7 @@
     "dockerFile": "Dockerfile",
     "mounts": [
         "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/mde-user/.aws,type=bind,consistency=cached",
-        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/mde-user/.ssh,type=bind,consistency=cached",
-        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/git/config,target=/home/mde-user/.config/git/config,type=bind,consistency=cached"
+        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/mde-user/.ssh,type=bind,consistency=cached"
     ],
     "customizations": {
         "vscode": {
