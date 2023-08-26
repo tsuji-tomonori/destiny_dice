@@ -1,0 +1,20 @@
+version: "3"
+
+env:
+  AWS_PROFILE: "admin"
+
+tasks:
+  mfa:
+    cmds:
+      - aws-mfa
+  diff:
+    cmds:
+      - pip install -r requirements.txt -t .layers/python --no-cache-dir
+      - cdk diff
+  deploy:
+    cmds:
+      - pip install -r requirements.txt -t .layers/python --no-cache-dir
+      - cdk deploy
+  create_pool:
+    cmds:
+      - curl -X POST -d @tests/resource/test.json https://585q0ney12.execute-api.ap-northeast-1.amazonaws.com/prod/test
