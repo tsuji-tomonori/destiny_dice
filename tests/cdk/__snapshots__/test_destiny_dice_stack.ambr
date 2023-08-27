@@ -1003,6 +1003,18 @@
               'Ref': 'infratopic6BC6CAE6',
             }),
           ]),
+          'AlarmDescription': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'Error level log from ',
+                dict({
+                  'Ref': 'appcreatepoolfunction57AE64A7',
+                }),
+              ]),
+            ]),
+          }),
+          'AlarmName': 'dice-alarm-log_error_create_pool',
           'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
           'EvaluationPeriods': 1,
           'MetricName': 'create_pool_error',
@@ -1178,6 +1190,18 @@
               'Ref': 'infratopic6BC6CAE6',
             }),
           ]),
+          'AlarmDescription': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'Lambda Function Error from ',
+                dict({
+                  'Ref': 'appcreatepoolfunction57AE64A7',
+                }),
+              ]),
+            ]),
+          }),
+          'AlarmName': 'dice-alarm-lambda_error_create_pool',
           'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
           'EvaluationPeriods': 1,
           'MetricName': 'Errors',
@@ -1247,6 +1271,18 @@
               'Ref': 'infratopic6BC6CAE6',
             }),
           ]),
+          'AlarmDescription': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'Error level log from ',
+                dict({
+                  'Ref': 'appdeletepoolfunction3B223939',
+                }),
+              ]),
+            ]),
+          }),
+          'AlarmName': 'dice-alarm-log_error_delete_pool',
           'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
           'EvaluationPeriods': 1,
           'MetricName': 'delete_pool_error',
@@ -1422,6 +1458,18 @@
               'Ref': 'infratopic6BC6CAE6',
             }),
           ]),
+          'AlarmDescription': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'Lambda Function Error from ',
+                dict({
+                  'Ref': 'appdeletepoolfunction3B223939',
+                }),
+              ]),
+            ]),
+          }),
+          'AlarmName': 'dice-alarm-lambda_error_delete_pool',
           'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
           'EvaluationPeriods': 1,
           'MetricName': 'Errors',
@@ -1491,6 +1539,18 @@
               'Ref': 'infratopic6BC6CAE6',
             }),
           ]),
+          'AlarmDescription': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'Error level log from ',
+                dict({
+                  'Ref': 'appdicefunction53F0EADF',
+                }),
+              ]),
+            ]),
+          }),
+          'AlarmName': 'dice-alarm-log_error_dice',
           'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
           'EvaluationPeriods': 1,
           'MetricName': 'dice_error',
@@ -1658,6 +1718,18 @@
               'Ref': 'infratopic6BC6CAE6',
             }),
           ]),
+          'AlarmDescription': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'Lambda Function Error from ',
+                dict({
+                  'Ref': 'appdicefunction53F0EADF',
+                }),
+              ]),
+            ]),
+          }),
+          'AlarmName': 'dice-alarm-lambda_error_dice',
           'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
           'EvaluationPeriods': 1,
           'MetricName': 'Errors',
@@ -1727,6 +1799,18 @@
               'Ref': 'infratopic6BC6CAE6',
             }),
           ]),
+          'AlarmDescription': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'Error level log from ',
+                dict({
+                  'Ref': 'applistpoolfunction398F1E85',
+                }),
+              ]),
+            ]),
+          }),
+          'AlarmName': 'dice-alarm-log_error_list_pool',
           'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
           'EvaluationPeriods': 1,
           'MetricName': 'list_pool_error',
@@ -1867,6 +1951,18 @@
               'Ref': 'infratopic6BC6CAE6',
             }),
           ]),
+          'AlarmDescription': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'Lambda Function Error from ',
+                dict({
+                  'Ref': 'applistpoolfunction398F1E85',
+                }),
+              ]),
+            ]),
+          }),
+          'AlarmName': 'dice-alarm-lambda_error_list_pool',
           'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
           'EvaluationPeriods': 1,
           'MetricName': 'Errors',

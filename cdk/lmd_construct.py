@@ -68,6 +68,10 @@ class LambdaConstruct(Construct):
             evaluation_periods=1,
             threshold=1,
             actions_enabled=True,
+            alarm_name=build_name("alarm", f"lambda_error_{construct_id}"),
+            alarm_description=(
+                f"Lambda Function Error from {self.function.function_name}"
+            ),
         )
         self.lambda_error_alarm.add_alarm_action(
             cloudwatch_actions.SnsAction(infra.sns_topic),
@@ -105,6 +109,8 @@ class LambdaConstruct(Construct):
             evaluation_periods=1,
             threshold=1,
             actions_enabled=True,
+            alarm_name=build_name("alarm", f"log_error_{construct_id}"),
+            alarm_description=f"Error level log from {self.function.function_name}",
         )
         self.log_error_alarm.add_alarm_action(
             cloudwatch_actions.SnsAction(infra.sns_topic),
