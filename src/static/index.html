@@ -10,7 +10,7 @@
 <body>
     <script>
         window.onload = (()=>{
-            fetch("https://585q0ney12.execute-api.ap-northeast-1.amazonaws.com/prod/pools", {
+            fetch("https://585q0ney12.execute-api.ap-northeast-1.amazonaws.com/v1/pools", {
                 method: "GET",
                 mode: "cors",
                 headers: {
@@ -37,7 +37,7 @@
         }
         function omikuji(){
             const pool_name = document.querySelector('#pools').value;
-            fetch(`https://585q0ney12.execute-api.ap-northeast-1.amazonaws.com/prod/pools/${pool_name}/dice`, {
+            fetch(`https://585q0ney12.execute-api.ap-northeast-1.amazonaws.com/v1/pools/${pool_name}/dice`, {
                 method: "GET",
                 mode: "cors",
                 headers: {
