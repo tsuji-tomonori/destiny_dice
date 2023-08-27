@@ -176,7 +176,7 @@ def service(
         db_name=env.ITEM_TABLE_NAME,
         key="pool_name",
         value=body.pool_name,
-        query="Items[].item_id.S",
+        query="Items[].item_id.N",
     )
     delete_items(
         db_resource=db_resource,

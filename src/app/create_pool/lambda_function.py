@@ -232,12 +232,12 @@ def service(
         db_name=env.ITEM_TABLE_NAME,
         key="pool_name",
         value=body.pool_name,
-        query="Items[].item_id.S",
+        query="Items[].item_id.N",
     )
     delete_items(
         db_resource=db_resource,
         table_name=env.ITEM_TABLE_NAME,
-        keys=[{"pool_name": body.pool_name, "item_id": x} for x in response_items],
+        keys=[{"pool_name": body.pool_name, "item_id": int(x)} for x in response_items],
     )
     put_items(
         db_resource=db_resource,
