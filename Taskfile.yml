@@ -17,7 +17,7 @@ tasks:
       - cdk deploy --all
   create_pool:
     cmds:
-      - curl -X POST -d @tests/resource/test.json https://585q0ney12.execute-api.ap-northeast-1.amazonaws.com/prod/test
+      - curl -X POST -d @tests/resource/test.json https://585q0ney12.execute-api.ap-northeast-1.amazonaws.com/v1/pools/test
   snapshot-update:
     cmds:
       - pytest tests/cdk --snapshot-update
