@@ -2311,9 +2311,7 @@
               'Fn::Sub': 'cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}',
             }),
           ]),
-          'SourceObjectKeys': list([
-            'e7e75259f8bd86c013aac4ad22a7a75ed97f0c34abc534665cf753be1dd9f81f.zip',
-          ]),
+          'SourceObjectKeys': list,
         }),
         'Type': 'Custom::CDKBucketDeployment',
         'UpdateReplacePolicy': 'Delete',

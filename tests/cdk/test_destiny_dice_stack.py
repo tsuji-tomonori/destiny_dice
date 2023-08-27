@@ -14,6 +14,7 @@ def test_snapshot(snapshot) -> None:
         {
             r".*\.S3Key$": (str,),
             r".*\.Addresses$": (list,),
+            r".*\.SourceObjectKeys$": (list,),
         },
         regex=True,
     )
