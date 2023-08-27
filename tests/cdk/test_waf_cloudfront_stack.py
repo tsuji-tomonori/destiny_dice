@@ -2,12 +2,12 @@ import aws_cdk as cdk
 from aws_cdk import assertions
 from syrupy.matchers import path_type
 
-from cdk.destiny_dice_stack import DestinyDiceStack
+from cdk.waf_cloudfront_stack import WafCloudFrontStack
 
 
 def test_snapshot(snapshot) -> None:
     app = cdk.Stack()
-    stack = DestinyDiceStack(app, "test", "hoge")
+    stack = WafCloudFrontStack(app, "test")
     template = assertions.Template.from_stack(stack)
 
     matcher = path_type(

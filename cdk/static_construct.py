@@ -13,6 +13,7 @@ class StaticConstruct(Construct):
         self: Self,
         scope: Construct,
         construct_id: str,
+        web_acl_arn: str,
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -30,6 +31,7 @@ class StaticConstruct(Construct):
             default_behavior=cloudfront.BehaviorOptions(
                 origin=origins.S3Origin(static_bucket),
             ),
+            web_acl_id=web_acl_arn,
         )
 
         deployment.BucketDeployment(

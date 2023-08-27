@@ -11,12 +11,13 @@ from cdk.static_construct import StaticConstruct
 class DestinyDiceStack(Stack):
     def __init__(
         self: Self,
-        scope: Construct | None = None,
-        construct_id: str | None = None,
+        scope: Construct,
+        construct_id: str,
+        web_acl_arn: str,
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         self.infra = InfraConstruct(self, "infra")
-        self.static = StaticConstruct(self, "static")
+        self.static = StaticConstruct(self, "static", web_acl_arn)
         self.app = AppConstruct(self, "app", self.infra)

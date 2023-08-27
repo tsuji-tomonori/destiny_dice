@@ -1959,8 +1959,7 @@
       }),
       'infraapigwipset3054E668': dict({
         'Properties': dict({
-          'Addresses': list([
-          ]),
+          'Addresses': list,
           'IPAddressVersion': 'IPV4',
           'Name': 'dice-ipset-apigw',
           'Scope': 'REGIONAL',
@@ -2157,6 +2156,7 @@
                 }),
               }),
             ]),
+            'WebACLId': 'hoge',
           }),
           'Tags': list([
             dict({

@@ -43,6 +43,9 @@ paramater = {
         "apigw": {
             "scope": "REGIONAL",
         },
+        "cloudfront": {
+            "scope": "CLOUDFRONT",
+        },
     },
 }
 

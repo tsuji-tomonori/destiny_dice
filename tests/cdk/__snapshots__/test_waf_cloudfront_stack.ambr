@@ -1,0 +1,91 @@
+# serializer version: 1
+# name: test_snapshot
+  dict({
+    'Parameters': dict({
+      'BootstrapVersion': dict({
+        'Default': '/cdk-bootstrap/hnb659fds/version',
+        'Description': 'Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]',
+        'Type': 'AWS::SSM::Parameter::Value<String>',
+      }),
+    }),
+    'Resources': dict({
+      'cloudfrontipset4C580034': dict({
+        'Properties': dict({
+          'Addresses': list,
+          'IPAddressVersion': 'IPV4',
+          'Name': 'dice-ipset-cloudfront',
+          'Scope': 'CLOUDFRONT',
+        }),
+        'Type': 'AWS::WAFv2::IPSet',
+      }),
+      'cloudfrontwebacl8A66464E': dict({
+        'Properties': dict({
+          'DefaultAction': dict({
+            'Block': dict({
+            }),
+          }),
+          'Name': 'dice-webacl-cloudfront',
+          'Rules': list([
+            dict({
+              'Action': dict({
+                'Allow': dict({
+                }),
+              }),
+              'Name': 'dice-rule-cloudfront',
+              'Priority': 100,
+              'Statement': dict({
+                'IPSetReferenceStatement': dict({
+                  'Arn': dict({
+                    'Fn::GetAtt': list([
+                      'cloudfrontipset4C580034',
+                      'Arn',
+                    ]),
+                  }),
+                }),
+              }),
+              'VisibilityConfig': dict({
+                'CloudWatchMetricsEnabled': True,
+                'MetricName': 'destiny_dice',
+                'SampledRequestsEnabled': True,
+              }),
+            }),
+          ]),
+          'Scope': 'CLOUDFRONT',
+          'VisibilityConfig': dict({
+            'CloudWatchMetricsEnabled': True,
+            'MetricName': 'destiny_dice',
+            'SampledRequestsEnabled': True,
+          }),
+        }),
+        'Type': 'AWS::WAFv2::WebACL',
+      }),
+    }),
+    'Rules': dict({
+      'CheckBootstrapVersion': dict({
+        'Assertions': list([
+          dict({
+            'Assert': dict({
+              'Fn::Not': list([
+                dict({
+                  'Fn::Contains': list([
+                    list([
+                      '1',
+                      '2',
+                      '3',
+                      '4',
+                      '5',
+                    ]),
+                    dict({
+                      'Ref': 'BootstrapVersion',
+                    }),
+                  ]),
+                }),
+              ]),
+            }),
+            'AssertDescription': "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+          }),
+        ]),
+      }),
+    }),
+  })
+# ---
