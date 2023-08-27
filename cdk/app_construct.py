@@ -1,6 +1,7 @@
 from typing import Any, Self
 
 from aws_cdk import aws_apigateway as apigw
+from aws_cdk import aws_wafv2 as wafv2
 from constructs import Construct
 
 from cdk.infra_construct import InfraConstruct
@@ -27,7 +28,28 @@ class AppConstruct(Construct):
             ),
             rest_api_name=build_name("api", "destiny_dice"),
             description="destiny_dice",
+            deploy_options=apigw.StageOptions(
+                data_trace_enabled=True,
+                logging_level=apigw.MethodLoggingLevel.ERROR,
+                stage_name="v1",
+            ),
         )
+
+        self.waf_connection = wafv2.CfnWebACLAssociation(
+            scope=self,
+            id="waf_connection",
+            resource_arn=(
+                f"arn:aws:apigateway:{self.api.env.region}::"
+                f"/restapis/{self.api.rest_api_id}/stages/{self.api.deployment_stage.stage_name}"
+            ),
+            web_acl_arn=infra.waf.webacl.attr_arn,
+        )
+
+        # APIのメソッドが作成された後でしか設定できないため
+        self.waf_connection.add_depends_on(
+            target=self.api.deployment_stage.node.default_child,  # type: ignore  # noqa: PGH003, E501
+        )
+
         pools = self.api.root.add_resource("pools")
         pool_name = pools.add_resource("{pool_name}")
         dice = pool_name.add_resource("dice")

@@ -6,6 +6,7 @@ from aws_cdk import aws_sns as sns
 from constructs import Construct
 
 from cdk.paramater import build_name
+from cdk.waf_construct import WafConstruct
 
 
 class InfraConstruct(Construct):
@@ -52,3 +53,5 @@ class InfraConstruct(Construct):
             id="topic",
             topic_name=build_name("topic", "error_notify"),
         )
+
+        self.waf = WafConstruct(self, "apigw")

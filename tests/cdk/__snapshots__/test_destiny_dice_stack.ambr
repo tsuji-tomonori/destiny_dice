@@ -21,7 +21,7 @@
               }),
               '/',
               dict({
-                'Ref': 'appapiDeploymentStageprod86597867',
+                'Ref': 'appapiDeploymentStagev1A5E79B07',
               }),
               '/',
             ]),
@@ -298,7 +298,7 @@
         }),
         'Type': 'AWS::ApiGateway::Deployment',
       }),
-      'appapiDeploymentStageprod86597867': dict({
+      'appapiDeploymentStagev1A5E79B07': dict({
         'DependsOn': list([
           'appapiAccount74CCBC71',
         ]),
@@ -306,10 +306,18 @@
           'DeploymentId': dict({
             'Ref': 'appapiDeployment11C3153226b2d020126ae2c5979370ee4c701075',
           }),
+          'MethodSettings': list([
+            dict({
+              'DataTraceEnabled': True,
+              'HttpMethod': '*',
+              'LoggingLevel': 'ERROR',
+              'ResourcePath': '/*',
+            }),
+          ]),
           'RestApiId': dict({
             'Ref': 'appapi049EFCB7',
           }),
-          'StageName': 'prod',
+          'StageName': 'v1',
         }),
         'Type': 'AWS::ApiGateway::Stage',
       }),
@@ -480,7 +488,7 @@
                 }),
                 '/',
                 dict({
-                  'Ref': 'appapiDeploymentStageprod86597867',
+                  'Ref': 'appapiDeploymentStagev1A5E79B07',
                 }),
                 '/GET/pools',
               ]),
@@ -650,7 +658,7 @@
                 }),
                 '/',
                 dict({
-                  'Ref': 'appapiDeploymentStageprod86597867',
+                  'Ref': 'appapiDeploymentStagev1A5E79B07',
                 }),
                 '/DELETE/pools/*',
               ]),
@@ -808,7 +816,7 @@
                 }),
                 '/',
                 dict({
-                  'Ref': 'appapiDeploymentStageprod86597867',
+                  'Ref': 'appapiDeploymentStagev1A5E79B07',
                 }),
                 '/POST/pools/*',
               ]),
@@ -938,7 +946,7 @@
                 }),
                 '/',
                 dict({
-                  'Ref': 'appapiDeploymentStageprod86597867',
+                  'Ref': 'appapiDeploymentStagev1A5E79B07',
                 }),
                 '/GET/pools/*/dice',
               ]),
@@ -1915,6 +1923,90 @@
           ]),
         }),
         'Type': 'AWS::Logs::MetricFilter',
+      }),
+      'appwafconnection6007F3D8': dict({
+        'DependsOn': list([
+          'appapiDeploymentStagev1A5E79B07',
+        ]),
+        'Properties': dict({
+          'ResourceArn': dict({
+            'Fn::Join': list([
+              '',
+              list([
+                'arn:aws:apigateway:',
+                dict({
+                  'Ref': 'AWS::Region',
+                }),
+                '::/restapis/',
+                dict({
+                  'Ref': 'appapi049EFCB7',
+                }),
+                '/stages/',
+                dict({
+                  'Ref': 'appapiDeploymentStagev1A5E79B07',
+                }),
+              ]),
+            ]),
+          }),
+          'WebACLArn': dict({
+            'Fn::GetAtt': list([
+              'infraapigwwebaclF245F579',
+              'Arn',
+            ]),
+          }),
+        }),
+        'Type': 'AWS::WAFv2::WebACLAssociation',
+      }),
+      'infraapigwipset3054E668': dict({
+        'Properties': dict({
+          'Addresses': list([
+          ]),
+          'IPAddressVersion': 'IPV4',
+          'Name': 'dice-ipset-apigw',
+          'Scope': 'REGIONAL',
+        }),
+        'Type': 'AWS::WAFv2::IPSet',
+      }),
+      'infraapigwwebaclF245F579': dict({
+        'Properties': dict({
+          'DefaultAction': dict({
+            'Block': dict({
+            }),
+          }),
+          'Name': 'dice-webacl-apigw',
+          'Rules': list([
+            dict({
+              'Action': dict({
+                'Allow': dict({
+                }),
+              }),
+              'Name': 'dice-rule-apigw',
+              'Priority': 100,
+              'Statement': dict({
+                'IPSetReferenceStatement': dict({
+                  'Arn': dict({
+                    'Fn::GetAtt': list([
+                      'infraapigwipset3054E668',
+                      'Arn',
+                    ]),
+                  }),
+                }),
+              }),
+              'VisibilityConfig': dict({
+                'CloudWatchMetricsEnabled': True,
+                'MetricName': 'destiny_dice',
+                'SampledRequestsEnabled': True,
+              }),
+            }),
+          ]),
+          'Scope': 'REGIONAL',
+          'VisibilityConfig': dict({
+            'CloudWatchMetricsEnabled': True,
+            'MetricName': 'destiny_dice',
+            'SampledRequestsEnabled': True,
+          }),
+        }),
+        'Type': 'AWS::WAFv2::WebACL',
       }),
       'infraitem5676F098': dict({
         'DeletionPolicy': 'Delete',

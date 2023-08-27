@@ -48,8 +48,8 @@ class LambdaConstruct(Construct):
             ),
             handler="lambda_function.lambda_handler",
             runtime=lambda_.Runtime.PYTHON_3_11,
-            environment=paramater["lambda"][construct_id]["env"],  # type: ignore  # noqa: PGH003, E501
-            memory_size=paramater["lambda"][construct_id]["memory_size"],  # type: ignore  # noqa: PGH003, E501
+            environment=paramater["lambda"][construct_id]["env"],
+            memory_size=paramater["lambda"][construct_id]["memory_size"],
             layers=[powertools_layer, lib_layer],
         )
 
