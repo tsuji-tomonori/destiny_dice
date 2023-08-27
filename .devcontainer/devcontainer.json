@@ -46,7 +46,12 @@
                 "python.analysis.ignore": [
                     "cdk.out/*",
                     ".layers/*"
-                ]
+                ],
+                "python.testing.pytestArgs": [
+                    "tests"
+                ],
+                "python.testing.unittestEnabled": false,
+                "python.testing.pytestEnabled": true
             }
         }
     }
