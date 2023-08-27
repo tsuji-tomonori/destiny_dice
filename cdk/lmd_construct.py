@@ -10,7 +10,7 @@ from aws_cdk import aws_logs as logs
 from constructs import Construct
 
 from cdk.infra_construct import InfraConstruct
-from cdk.paramater import paramater
+from cdk.paramater import build_name, paramater
 
 with (Path.cwd() / "pyproject.toml").open("rb") as f:
     project = tomllib.load(f)["project"]["name"]
@@ -51,6 +51,7 @@ class LambdaConstruct(Construct):
             environment=paramater["lambda"][construct_id]["env"],
             memory_size=paramater["lambda"][construct_id]["memory_size"],
             layers=[powertools_layer, lib_layer],
+            function_name=build_name("function", construct_id),
         )
 
         self.function.add_environment(

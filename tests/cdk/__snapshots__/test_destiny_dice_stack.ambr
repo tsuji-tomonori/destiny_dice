@@ -276,7 +276,7 @@
         'Type': 'AWS::IAM::Role',
         'UpdateReplacePolicy': 'Retain',
       }),
-      'appapiDeployment11C3153226b2d020126ae2c5979370ee4c701075': dict({
+      'appapiDeployment11C315329686fffe756f77dd9440844f244bb9be': dict({
         'DependsOn': list([
           'appapiOPTIONS969A4903',
           'appapipoolspoolnameDELETE7A5261B5',
@@ -304,7 +304,7 @@
         ]),
         'Properties': dict({
           'DeploymentId': dict({
-            'Ref': 'appapiDeployment11C3153226b2d020126ae2c5979370ee4c701075',
+            'Ref': 'appapiDeployment11C315329686fffe756f77dd9440844f244bb9be',
           }),
           'MethodSettings': list([
             dict({
@@ -1037,6 +1037,7 @@
               'POWERTOOLS_SERVICE_NAME': 'create_pool',
             }),
           }),
+          'FunctionName': 'dice-function-create_pool',
           'Handler': 'lambda_function.lambda_handler',
           'Layers': list([
             dict({
@@ -1280,6 +1281,7 @@
               'POWERTOOLS_SERVICE_NAME': 'delete_pool',
             }),
           }),
+          'FunctionName': 'dice-function-delete_pool',
           'Handler': 'lambda_function.lambda_handler',
           'Layers': list([
             dict({
@@ -1523,6 +1525,7 @@
               'POWERTOOLS_SERVICE_NAME': 'dice',
             }),
           }),
+          'FunctionName': 'dice-function-dice',
           'Handler': 'lambda_function.lambda_handler',
           'Layers': list([
             dict({
@@ -1755,6 +1758,7 @@
               'POWERTOOLS_SERVICE_NAME': 'list_pool',
             }),
           }),
+          'FunctionName': 'dice-function-list_pool',
           'Handler': 'lambda_function.lambda_handler',
           'Layers': list([
             dict({
