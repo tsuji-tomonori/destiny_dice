@@ -12,4 +12,6 @@ fi
 LS_COLORS=:'ow=34;40:' ; export LS_COLORS
 alias python='python3.11'
 alias pip='pip3.11'
+git secrets --install
+git secrets --register-aws
 . ~/.bash_profile

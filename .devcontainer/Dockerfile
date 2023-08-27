@@ -11,6 +11,10 @@ RUN sudo mkdir /etc/install
 COPY requirements-dev.txt /etc/install
 COPY .bash_profile /etc/install
 COPY .bashrc /etc/install
+RUN cd /tmp && \
+    git clone https://github.com/awslabs/git-secrets.git && \
+    cd git-secrets && \
+    sudo make install
 RUN pip3.11 install --upgrade pip && \
     pip3.11 install -r /etc/install/requirements-dev.txt && \
     sudo ln -sf  /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
