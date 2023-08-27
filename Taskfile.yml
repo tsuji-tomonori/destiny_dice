@@ -23,6 +23,7 @@ tasks:
       - pytest tests/cdk --snapshot-update
   check:
     cmds:
+      - black .
+      - ruff check .
       - pytest tests
       - mypy src cdk
-      - ruff check .
